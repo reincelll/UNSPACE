@@ -7,6 +7,8 @@ import tkinter as tk
 from tkinter import messagebox
 from engine.assets import asset_path
 import sys
+from engine.color import get_primary
+
 root = tk.Tk()
 root.withdraw()
 
@@ -31,7 +33,7 @@ def main():
     debug = False
 
     cursor_image = rl.load_texture(asset_path("assets/cursor.png"))
-    cursor_color = rl.RED
+    cursor_color = get_primary()
 
     scene_manager = SceneManager()
     scene_manager.change(LoadingScene(scene_manager))
@@ -62,10 +64,12 @@ def main():
                 draw_debug("Python/File", 3, 63)
             draw_debug(str(buttons), 3, 78)
 
-        cursor_color = rl.RED
+        cursor_color = rl.WHITE
         for btn in buttons:
-            if btn.selected or rl.is_mouse_button_down(rl.MOUSE_BUTTON_LEFT):
-                cursor_color = rl.WHITE
+            if btn.selected:
+                cursor_color = get_primary()
+        if rl.is_mouse_button_down(rl.MOUSE_BUTTON_LEFT):
+            cursor_color = get_primary()
 
         rl.draw_texture_ex(cursor_image, rl.Vector2(rl.get_mouse_x() - 2, rl.get_mouse_y() - 2), 0, 0.5, cursor_color)
 

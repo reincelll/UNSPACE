@@ -11,6 +11,7 @@ class SceneManager:
             self.current.on_exit()
             print(f"unloading {self.current}...")
             loaded_scenes.remove(self.current)
+            del self.current
         del_buttons()
         self.current = scene
         self.current.on_enter()

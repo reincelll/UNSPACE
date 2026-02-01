@@ -1,5 +1,6 @@
 import raylibpy as rl
 from engine.text import text
+from engine.color import get_primary
 
 buttons = []
 
@@ -14,7 +15,7 @@ def button_update():
                 btn.selected = False
 
 class button:
-    def __init__(self, text, x, y, width, height, on_click=None):
+    def __init__(self, text, x, y, width, height, on_click=None, text_size=0, color=get_primary()):
         self.text = text
         self.x = x
         self.y = y
@@ -23,21 +24,29 @@ class button:
         self.selected = False
         self.on_click = on_click
         self.clicked = False
+        self.text_size = text_size
+        self.color = color
         global buttons
         buttons.append(self)
 
     def draw(self):
-        color = rl.RED
-        bg_color = rl.RED
+        if self.color:
+            color = self.color
+            bg_color = self.color
+        else:
+            color = get_primary()
+            bg_color = get_primary()
+        if self.text_size:
+            text_size = self.text_size
+        else:
+            text_size = self.height - 10
         offset = 0
         if self.selected:
             color = rl.BLACK
             if rl.is_mouse_button_down(rl.MOUSE_BUTTON_LEFT):
                 offset = 2
-                bg_color = rl.Color(255, 71, 85, 255)
             else:
                 offset = 5
-                bg_color = rl.RED
             rl.draw_rectangle(self.x, self.y, self.width, self.height, bg_color)
             if rl.is_mouse_button_released(rl.MOUSE_BUTTON_LEFT):
                 if not self.clicked:
@@ -49,7 +58,7 @@ class button:
         else:
             self.clicked = False
         rl.draw_rectangle_lines_ex(rl.Rectangle(self.x - offset, self.y - offset, self.width + (offset * 2), self.height + (offset * 2)), 2, color)
-        text(self.text, self.x + (self.width / 2) - (rl.measure_text(self.text, self.height - 10) / 2), self.y + 5 - offset, self.height - 10, color)
+        text(self.text, self.x + (self.width / 2) - (rl.measure_text(self.text, text_size) / 2), (self.y + (self.height / 2) - (text_size / 2)) - offset, text_size, color)
 
 def del_buttons():
     buttons.clear()

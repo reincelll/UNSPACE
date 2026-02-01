@@ -2,7 +2,8 @@ import raylibpy as rl
 from scenes.scene import Scene
 from engine.text import text
 from engine.button import button, buttons
-from scenes.game_scene import GameScene
+import scenes as sc
+from engine.color import get_primary
 
 class MenuScene(Scene):
     def __init__(self, manager):
@@ -13,24 +14,20 @@ class MenuScene(Scene):
         self.btn_play = button("PLAY", 20, 260, 140, 60, on_click=self.on_play_clicked)
         self.btn_settings = button("SETTINGS", 20, 330, 140, 45, on_click=self.on_settings_clicked)
         self.btn_help = button("HELP", 20, 370, 140, 30, on_click=self.on_help_clicked)
-        self.btn_quit = button("QUIT", 20, 370, 140, 30, on_click=self.on_quit_clicked)
+        self.btn_quit = button("QUIT TO DESKTOP", 20, 370, 140, 30, on_click=self.on_quit_clicked)
         return super().on_enter()
     
     def on_exit(self):
-        for btn in buttons:
-            del btn
         return super().on_exit()
 
     def on_play_clicked(self):
-        self.manager.change(GameScene(self.manager))
+        self.manager.change(sc.GameScene(self.manager))
 
     def on_settings_clicked(self):
-        print("Settings button clicked!")
-        # Add your settings logic here
+        self.manager.change(sc.SettingsScene(self.manager))
 
     def on_help_clicked(self):
         print("Help button clicked!")
-        # Add your help logic here
 
     def on_quit_clicked(self):
         rl.close_window()
@@ -50,8 +47,8 @@ class MenuScene(Scene):
         self.btn_play.y = self.btn_settings.y - (self.btn_play.height + 10)
 
     def draw(self):
-        rl.draw_rectangle_lines(10, 10, rl.get_screen_width() - 20, rl.get_screen_height() - 20, rl.RED)
-        rl.draw_rectangle(rl.get_screen_width() / 2 - (rl.measure_text("UNSPACE", 80) / 2) - 15, 30, rl.measure_text("UNSPACE", 80) + 30, 60, rl.RED)
+        rl.draw_rectangle_lines(10, 10, rl.get_screen_width() - 20, rl.get_screen_height() - 20, get_primary())
+        rl.draw_rectangle(rl.get_screen_width() / 2 - (rl.measure_text("UNSPACE", 80) / 2) - 15, 30, rl.measure_text("UNSPACE", 80) + 30, 60, get_primary())
         text("UNSPACE", rl.get_screen_width() / 2 - (rl.measure_text("UNSPACE", 80) / 2) - 13, 20, 80, rl.BLACK)
         self.btn_play.draw()
         self.btn_settings.draw()
