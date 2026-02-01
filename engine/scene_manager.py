@@ -1,3 +1,5 @@
+from engine.button import del_buttons
+
 loaded_scenes = []
 
 class SceneManager:
@@ -9,6 +11,7 @@ class SceneManager:
             self.current.on_exit()
             print(f"unloading {self.current}...")
             loaded_scenes.remove(self.current)
+        del_buttons()
         self.current = scene
         self.current.on_enter()
         print(f"loading {self.current}...")

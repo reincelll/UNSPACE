@@ -49,4 +49,7 @@ class button:
         else:
             self.clicked = False
         rl.draw_rectangle_lines_ex(rl.Rectangle(self.x - offset, self.y - offset, self.width + (offset * 2), self.height + (offset * 2)), 2, color)
-        text(self.text, self.x + (self.width / 2) - (rl.measure_text(self.text, self.height - 10) / 2), self.y + 5, self.height - 10, color)
+        text(self.text, self.x + (self.width / 2) - (rl.measure_text(self.text, self.height - 10) / 2), self.y + 5 - offset, self.height - 10, color)
+
+def del_buttons():
+    buttons.clear()

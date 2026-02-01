@@ -1,4 +1,7 @@
 class Scene:
+    def __init__(self):
+        self.buttons = []
+
     def on_enter(self):
         pass
 

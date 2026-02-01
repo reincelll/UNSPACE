@@ -6,12 +6,21 @@ from engine.button import button_update, buttons
 import tkinter as tk
 from tkinter import messagebox
 from engine.assets import asset_path
+import sys
 root = tk.Tk()
 root.withdraw()
 
+info = {
+    "version": "0.0.0"
+}
+
+def draw_debug(text, x, y):
+    rl.draw_rectangle(x, y, rl.measure_text(text, 12) + 6, 15, rl.Color(255, 255, 255, 172))
+    rl.draw_text(text, x + 2, y + 2, 12, rl.BLACK)
+
 def main():
     rl.set_config_flags(rl.FLAG_WINDOW_RESIZABLE)
-    rl.init_window(1080, 740, "UNSPACE")
+    rl.init_window(1080, 740, "𝚄𝙽𝚂𝙿𝙰𝙲𝙴")
     rl.set_target_fps(30)
     rl.set_exit_key(rl.KEY_NULL)
     rl.hide_cursor()
@@ -43,10 +52,15 @@ def main():
         rl.clear_background(rl.BLACK)
         scene_manager.draw()
         if debug:
-            rl.draw_rectangle(3, 3, rl.measure_text(str(round(rl.get_fps())), 12) + 3, 15, rl.Color(0, 0, 0, 172))
-            rl.draw_text(str(round(rl.get_fps())), 5, 5, 12, rl.WHITE)
-            rl.draw_text(str(round(rl.get_frame_time(), 8)), 5, 17, 12, rl.WHITE)
-            rl.draw_text(str(loaded_scenes), 5, 29, 12, rl.WHITE)
+            draw_debug(f"Frames Per Second: {str(round(rl.get_fps()))}", 3, 3)
+            draw_debug(f"Delta Time: {str(round(rl.get_frame_time(), 8))}", 3, 18)
+            draw_debug(str(loaded_scenes), 3, 33)
+            draw_debug(info["version"], 3, 48)
+            if getattr(sys, 'frozen', False):
+                draw_debug("Compiled/Build", 3, 63)
+            else:
+                draw_debug("Python/File", 3, 63)
+            draw_debug(str(buttons), 3, 78)
 
         cursor_color = rl.RED
         for btn in buttons:
