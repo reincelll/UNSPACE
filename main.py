@@ -5,6 +5,7 @@ from engine.text import load_font
 from engine.button import button_update, buttons
 import tkinter as tk
 from tkinter import messagebox
+from engine.assets import asset_path
 root = tk.Tk()
 root.withdraw()
 
@@ -20,7 +21,7 @@ def main():
 
     debug = False
 
-    cursor_image = rl.load_texture("assets/cursor.png")
+    cursor_image = rl.load_texture(asset_path("assets/cursor.png"))
     cursor_color = rl.RED
 
     scene_manager = SceneManager()
