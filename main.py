@@ -7,13 +7,22 @@ import tkinter as tk
 from tkinter import messagebox
 from engine.assets import asset_path
 import sys
+import ctypes
 from engine.color import get_primary
+import engine.settings as s
 
 root = tk.Tk()
 root.withdraw()
 
+if "--console" in sys.argv:
+    ctypes.windll.kernel32.AllocConsole()
+    sys.stdout = open("CONOUT$", "w")
+    sys.stderr = open("CONOUT$", "w")
+    sys.stdin  = open("CONIN$", "r")
+
 info = {
-    "version": "0.0.0"
+    "version": "0.0.0",
+    "build_notes": "2/1/26; 12:48PM"
 }
 
 def draw_debug(text, x, y):
@@ -21,12 +30,15 @@ def draw_debug(text, x, y):
     rl.draw_text(text, x + 2, y + 2, 12, rl.BLACK)
 
 def main():
+    settings = s.load_settings()
     rl.set_config_flags(rl.FLAG_WINDOW_RESIZABLE)
-    rl.init_window(1080, 740, "𝚄𝙽𝚂𝙿𝙰𝙲𝙴")
+    rl.init_window(1080, 740, "UNSPACE")
     rl.set_target_fps(30)
     rl.set_exit_key(rl.KEY_NULL)
     rl.hide_cursor()
     rl.set_window_min_size(640, 480)
+    if settings["fullscreen"]:
+        rl.toggle_borderless_windowed()
 
     load_font()
 
@@ -63,6 +75,7 @@ def main():
             else:
                 draw_debug("Python/File", 3, 63)
             draw_debug(str(buttons), 3, 78)
+            draw_debug(info["build_notes"], 3, 93)
 
         cursor_color = rl.WHITE
         for btn in buttons:

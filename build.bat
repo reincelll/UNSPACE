@@ -6,6 +6,7 @@ python -m PyInstaller ^
   --windowed ^
   --icon=icon.ico ^
   --collect-all raylibpy ^
-  --add-data "assets;assets"
+  --add-data "assets;assets" ^
+  --add-data "data;data"
 
 pause

@@ -1,3 +1,5 @@
 {
-    "primary_color": "GREEN"
+    "primary_color": "GREEN",
+    "fullscreen": false,
+    "max_fps": 60
 }

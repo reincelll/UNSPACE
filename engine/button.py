@@ -30,12 +30,8 @@ class button:
         buttons.append(self)
 
     def draw(self):
-        if self.color:
-            color = self.color
-            bg_color = self.color
-        else:
-            color = get_primary()
-            bg_color = get_primary()
+        color = self.color
+        bg_color = self.color
         if self.text_size:
             text_size = self.text_size
         else:
@@ -59,6 +55,44 @@ class button:
             self.clicked = False
         rl.draw_rectangle_lines_ex(rl.Rectangle(self.x - offset, self.y - offset, self.width + (offset * 2), self.height + (offset * 2)), 2, color)
         text(self.text, self.x + (self.width / 2) - (rl.measure_text(self.text, text_size) / 2), (self.y + (self.height / 2) - (text_size / 2)) - offset, text_size, color)
+
+class slider:
+    def __init__(self, x, y, width, height, min_value=0, max_value=100, initial_value=50, on_change=None, color=get_primary()):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.min_value = min_value
+        self.max_value = max_value
+        self.value = initial_value
+        self.on_change = on_change
+        self.color = color
+        self.handle_width = 10
+        self.dragging = False
+        self.selected = False
+
+        global buttons
+        buttons.append(self)
+
+    def draw(self):
+        rl.draw_rectangle(self.x, self.y + self.height // 2 - 2, self.width, 4, rl.LIGHTGRAY)
+        handle_x = self.x + int((self.value - self.min_value) / (self.max_value - self.min_value) * (self.width - self.handle_width))
+        handle_y = self.y
+        rl.draw_rectangle(handle_x, handle_y, self.handle_width, self.height, self.color)
+
+        mouse_x, mouse_y = rl.get_mouse_x(), rl.get_mouse_y()
+        if rl.is_mouse_button_down(rl.MOUSE_BUTTON_LEFT):
+            if (self.x <= mouse_x <= self.x + self.width and
+                self.y <= mouse_y <= self.y + self.height) or self.dragging:
+                self.dragging = True
+                relative_x = max(self.x, min(mouse_x - self.handle_width // 2, self.x + self.width - self.handle_width))
+                self.value = self.min_value + (relative_x - self.x) / (self.width - self.handle_width) * (self.max_value - self.min_value)
+                if self.on_change:
+                    self.on_change(self.value)
+        else:
+            self.dragging = False
+
+
 
 def del_buttons():
     buttons.clear()

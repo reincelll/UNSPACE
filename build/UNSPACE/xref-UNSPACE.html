@@ -25,6 +25,7 @@ imports:
  &#8226;   <a href="#collections">collections</a>
  &#8226;   <a href="#collections.abc">collections.abc</a>
  &#8226;   <a href="#copyreg">copyreg</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
  &#8226;   <a href="#encodings">encodings</a>
  &#8226;   <a href="#encodings.aliases">encodings.aliases</a>
  &#8226;   <a href="#encodings.ascii">encodings.ascii</a>
@@ -149,7 +150,9 @@ imports:
  &#8226;   <a href="#encodings.zlib_codec">encodings.zlib_codec</a>
  &#8226;   <a href="#engine.assets">engine.assets</a>
  &#8226;   <a href="#engine.button">engine.button</a>
+ &#8226;   <a href="#engine.color">engine.color</a>
  &#8226;   <a href="#engine.scene_manager">engine.scene_manager</a>
+ &#8226;   <a href="#engine.settings">engine.settings</a>
  &#8226;   <a href="#engine.text">engine.text</a>
  &#8226;   <a href="#enum">enum</a>
  &#8226;   <a href="#functools">functools</a>
@@ -242,7 +245,7 @@ imported by:
   <a target="code" href="" type="text/plain"><tt>'org.python'</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
-    <a href="#copy">copy</a>
+    <a href="#pickle">pickle</a>
 
   </div>
 
@@ -1552,8 +1555,8 @@ imported by:
   <a target="code" href="///C:/Users/reinc/AppData/Local/Programs/Python/Python311/Lib/copy.py" type="text/plain"><tt>copy</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#'org.python'">'org.python'</a>
- &#8226;   <a href="#copyreg">copyreg</a>
+    <a href="#copyreg">copyreg</a>
+ &#8226;   <a href="#org">org</a>
  &#8226;   <a href="#types">types</a>
  &#8226;   <a href="#weakref">weakref</a>
 
@@ -1631,6 +1634,7 @@ imports:
 imported by:
     <a href="#ctypes._endian">ctypes._endian</a>
  &#8226;   <a href="#ctypes.wintypes">ctypes.wintypes</a>
+ &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#raylibpy">raylibpy</a>
 
   </div>
@@ -4743,7 +4747,9 @@ imports:
 imported by:
     <a href="#engine.assets">engine.assets</a>
  &#8226;   <a href="#engine.button">engine.button</a>
+ &#8226;   <a href="#engine.color">engine.color</a>
  &#8226;   <a href="#engine.scene_manager">engine.scene_manager</a>
+ &#8226;   <a href="#engine.settings">engine.settings</a>
  &#8226;   <a href="#engine.text">engine.text</a>
 
   </div>
@@ -4765,6 +4771,8 @@ imported by:
     <a href="#engine.text">engine.text</a>
  &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#scenes.loading_scene">scenes.loading_scene</a>
+ &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
+ &#8226;   <a href="#scenes.settings_scene">scenes.settings_scene</a>
 
   </div>
 
@@ -4776,6 +4784,7 @@ imported by:
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
     <a href="#engine">engine</a>
+ &#8226;   <a href="#engine.color">engine.color</a>
  &#8226;   <a href="#engine.text">engine.text</a>
  &#8226;   <a href="#raylibpy">raylibpy</a>
 
@@ -4786,6 +4795,29 @@ imported by:
  &#8226;   <a href="#engine.scene_manager">engine.scene_manager</a>
  &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
+ &#8226;   <a href="#scenes.settings_scene">scenes.settings_scene</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="engine.color"></a>
+  <a target="code" href="///C:/Users/reinc/GitHub/UNSPACE/engine/color.py" type="text/plain"><tt>engine.color</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#engine">engine</a>
+ &#8226;   <a href="#raylibpy">raylibpy</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#engine.button">engine.button</a>
+ &#8226;   <a href="#main.py">main.py</a>
+ &#8226;   <a href="#scenes.game_scene">scenes.game_scene</a>
+ &#8226;   <a href="#scenes.loading_scene">scenes.loading_scene</a>
+ &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
+ &#8226;   <a href="#scenes.settings_scene">scenes.settings_scene</a>
 
   </div>
 
@@ -4810,6 +4842,26 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="engine.settings"></a>
+  <a target="code" href="///C:/Users/reinc/GitHub/UNSPACE/engine/settings.py" type="text/plain"><tt>engine.settings</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#engine">engine</a>
+ &#8226;   <a href="#json">json</a>
+ &#8226;   <a href="#pathlib">pathlib</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#main.py">main.py</a>
+ &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
+ &#8226;   <a href="#scenes.settings_scene">scenes.settings_scene</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="engine.text"></a>
   <a target="code" href="///C:/Users/reinc/GitHub/UNSPACE/engine/text.py" type="text/plain"><tt>engine.text</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
@@ -4827,6 +4879,7 @@ imported by:
  &#8226;   <a href="#scenes.game_scene">scenes.game_scene</a>
  &#8226;   <a href="#scenes.loading_scene">scenes.loading_scene</a>
  &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
+ &#8226;   <a href="#scenes.settings_scene">scenes.settings_scene</a>
 
   </div>
 
@@ -5154,6 +5207,7 @@ imports:
  &#8226;   <a href="#importlib">importlib</a>
  &#8226;   <a href="#importlib._bootstrap">importlib._bootstrap</a>
  &#8226;   <a href="#importlib._bootstrap_external">importlib._bootstrap_external</a>
+ &#8226;   <a href="#importlib.machinery">importlib.machinery</a>
  &#8226;   <a href="#sys">sys</a>
  &#8226;   <a href="#warnings">warnings</a>
 
@@ -5284,7 +5338,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#importlib.abc">importlib.abc</a>
+    <a href="#importlib">importlib</a>
+ &#8226;   <a href="#importlib.abc">importlib.abc</a>
  &#8226;   <a href="#inspect">inspect</a>
  &#8226;   <a href="#py_compile">py_compile</a>
 
@@ -5801,7 +5856,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#json.decoder">json.decoder</a>
+    <a href="#engine.settings">engine.settings</a>
+ &#8226;   <a href="#json.decoder">json.decoder</a>
  &#8226;   <a href="#json.encoder">json.encoder</a>
  &#8226;   <a href="#json.scanner">json.scanner</a>
  &#8226;   <a href="#raylibpy">raylibpy</a>
@@ -6131,7 +6187,7 @@ imported by:
   <a target="code" href="" type="text/plain"><tt>org</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
-    <a href="#pickle">pickle</a>
+    <a href="#copy">copy</a>
 
   </div>
 
@@ -6246,7 +6302,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#importlib.metadata">importlib.metadata</a>
+    <a href="#engine.settings">engine.settings</a>
+ &#8226;   <a href="#importlib.metadata">importlib.metadata</a>
  &#8226;   <a href="#importlib.resources._common">importlib.resources._common</a>
  &#8226;   <a href="#importlib.resources._legacy">importlib.resources._legacy</a>
  &#8226;   <a href="#importlib.resources.readers">importlib.resources.readers</a>
@@ -6261,14 +6318,14 @@ imported by:
   <a target="code" href="///C:/Users/reinc/AppData/Local/Programs/Python/Python311/Lib/pickle.py" type="text/plain"><tt>pickle</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#_compat_pickle">_compat_pickle</a>
+    <a href="#'org.python'">'org.python'</a>
+ &#8226;   <a href="#_compat_pickle">_compat_pickle</a>
  &#8226;   <a href="#_pickle">_pickle</a>
  &#8226;   <a href="#codecs">codecs</a>
  &#8226;   <a href="#copyreg">copyreg</a>
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#io">io</a>
  &#8226;   <a href="#itertools">itertools</a>
- &#8226;   <a href="#org">org</a>
  &#8226;   <a href="#pprint">pprint</a>
  &#8226;   <a href="#re">re</a>
  &#8226;   <a href="#struct">struct</a>
@@ -6495,6 +6552,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#engine.button">engine.button</a>
+ &#8226;   <a href="#engine.color">engine.color</a>
  &#8226;   <a href="#engine.text">engine.text</a>
  &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#raylibpy">raylibpy</a>
@@ -6502,6 +6560,7 @@ imported by:
  &#8226;   <a href="#scenes.game_scene">scenes.game_scene</a>
  &#8226;   <a href="#scenes.loading_scene">scenes.loading_scene</a>
  &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
+ &#8226;   <a href="#scenes.settings_scene">scenes.settings_scene</a>
 
   </div>
 
@@ -6723,6 +6782,7 @@ imports:
  &#8226;   <a href="#scenes.loading_scene">scenes.loading_scene</a>
  &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
  &#8226;   <a href="#scenes.scene">scenes.scene</a>
+ &#8226;   <a href="#scenes.settings_scene">scenes.settings_scene</a>
 
   </div>
   <div class="import">
@@ -6733,6 +6793,7 @@ imported by:
  &#8226;   <a href="#scenes.loading_scene">scenes.loading_scene</a>
  &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
  &#8226;   <a href="#scenes.scene">scenes.scene</a>
+ &#8226;   <a href="#scenes.settings_scene">scenes.settings_scene</a>
 
   </div>
 
@@ -6743,16 +6804,15 @@ imported by:
   <a target="code" href="///C:/Users/reinc/GitHub/UNSPACE/scenes/game_scene.py" type="text/plain"><tt>scenes.game_scene</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#engine.text">engine.text</a>
+    <a href="#engine.color">engine.color</a>
+ &#8226;   <a href="#engine.text">engine.text</a>
  &#8226;   <a href="#raylibpy">raylibpy</a>
  &#8226;   <a href="#scenes">scenes</a>
- &#8226;   <a href="#scenes.scene">scenes.scene</a>
 
   </div>
   <div class="import">
 imported by:
     <a href="#scenes">scenes</a>
- &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
 
   </div>
 
@@ -6764,10 +6824,10 @@ imported by:
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
     <a href="#engine.assets">engine.assets</a>
+ &#8226;   <a href="#engine.color">engine.color</a>
  &#8226;   <a href="#engine.text">engine.text</a>
  &#8226;   <a href="#raylibpy">raylibpy</a>
  &#8226;   <a href="#scenes">scenes</a>
- &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
  &#8226;   <a href="#scenes.scene">scenes.scene</a>
 
   </div>
@@ -6784,18 +6844,19 @@ imported by:
   <a target="code" href="///C:/Users/reinc/GitHub/UNSPACE/scenes/menu_scene.py" type="text/plain"><tt>scenes.menu_scene</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#engine.button">engine.button</a>
+    <a href="#engine.assets">engine.assets</a>
+ &#8226;   <a href="#engine.button">engine.button</a>
+ &#8226;   <a href="#engine.color">engine.color</a>
+ &#8226;   <a href="#engine.settings">engine.settings</a>
  &#8226;   <a href="#engine.text">engine.text</a>
  &#8226;   <a href="#raylibpy">raylibpy</a>
  &#8226;   <a href="#scenes">scenes</a>
- &#8226;   <a href="#scenes.game_scene">scenes.game_scene</a>
  &#8226;   <a href="#scenes.scene">scenes.scene</a>
 
   </div>
   <div class="import">
 imported by:
     <a href="#scenes">scenes</a>
- &#8226;   <a href="#scenes.loading_scene">scenes.loading_scene</a>
 
   </div>
 
@@ -6812,9 +6873,32 @@ imports:
   <div class="import">
 imported by:
     <a href="#scenes">scenes</a>
- &#8226;   <a href="#scenes.game_scene">scenes.game_scene</a>
  &#8226;   <a href="#scenes.loading_scene">scenes.loading_scene</a>
  &#8226;   <a href="#scenes.menu_scene">scenes.menu_scene</a>
+ &#8226;   <a href="#scenes.settings_scene">scenes.settings_scene</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="scenes.settings_scene"></a>
+  <a target="code" href="///C:/Users/reinc/GitHub/UNSPACE/scenes/settings_scene.py" type="text/plain"><tt>scenes.settings_scene</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#engine.assets">engine.assets</a>
+ &#8226;   <a href="#engine.button">engine.button</a>
+ &#8226;   <a href="#engine.color">engine.color</a>
+ &#8226;   <a href="#engine.settings">engine.settings</a>
+ &#8226;   <a href="#engine.text">engine.text</a>
+ &#8226;   <a href="#raylibpy">raylibpy</a>
+ &#8226;   <a href="#scenes">scenes</a>
+ &#8226;   <a href="#scenes.scene">scenes.scene</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#scenes">scenes</a>
 
   </div>
 

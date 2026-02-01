@@ -4,13 +4,16 @@ from engine.text import text
 from engine.button import button, buttons
 import scenes as sc
 from engine.color import get_primary
+from engine.assets import asset_path
+import engine.settings as s
 
 class MenuScene(Scene):
     def __init__(self, manager):
         self.manager = manager
+        self.settings = s.load_settings()
 
     def on_enter(self):
-        rl.set_target_fps(rl.get_monitor_refresh_rate(rl.get_current_monitor()))
+        rl.set_target_fps(self.settings.get("max_fps", 60))
         self.btn_play = button("PLAY", 20, 260, 140, 60, on_click=self.on_play_clicked)
         self.btn_settings = button("SETTINGS", 20, 330, 140, 45, on_click=self.on_settings_clicked)
         self.btn_help = button("HELP", 20, 370, 140, 30, on_click=self.on_help_clicked)
