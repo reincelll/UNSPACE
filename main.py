@@ -14,6 +14,7 @@ def main():
     rl.set_target_fps(30)
     rl.set_exit_key(rl.KEY_NULL)
     rl.hide_cursor()
+    rl.set_window_min_size(640, 480)
 
     load_font()
 
@@ -27,8 +28,6 @@ def main():
 
     while not rl.window_should_close():
         dt = rl.get_frame_time()
-        dpi = 1.0 / min(rl.get_screen_width() / 1080, rl.get_screen_height() / 720)
-        dpi = rl.clamp(dpi, 0.75, 1.5)
 
         button_update()
 
@@ -46,10 +45,10 @@ def main():
 
         cursor_color = rl.RED
         for btn in buttons:
-            if btn.selected:
+            if btn.selected or rl.is_mouse_button_down(rl.MOUSE_BUTTON_LEFT):
                 cursor_color = rl.WHITE
 
-        rl.draw_texture_ex(cursor_image, rl.Vector2(rl.get_mouse_x() - 2, rl.get_mouse_y() - 2), 0, dpi * 2, cursor_color)
+        rl.draw_texture_ex(cursor_image, rl.Vector2(rl.get_mouse_x() - 2, rl.get_mouse_y() - 2), 0, 0.5, cursor_color)
 
         rl.end_drawing()
 
@@ -61,7 +60,7 @@ try:
     rl.close_window()
 except Exception as e:
     messagebox.showerror(
-        "Error",
+        "UNSPACE Engine Error!",
         f"{type(e).__name__}\n{e}"
     )
     rl.close_window()
