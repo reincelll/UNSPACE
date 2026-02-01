@@ -1,5 +1,5 @@
 import raylibpy as rl
-from engine.scene_manager import SceneManager
+from engine.scene_manager import SceneManager, loaded_scenes
 from scenes import *
 from engine.text import load_font
 from engine.button import button_update, buttons
@@ -18,7 +18,7 @@ def main():
 
     load_font()
 
-    debug = True
+    debug = False
 
     cursor_image = rl.load_texture("assets/cursor.png")
     cursor_color = rl.RED
@@ -35,6 +35,8 @@ def main():
 
         if rl.is_key_pressed(rl.KEY_F11):
             rl.toggle_borderless_windowed()
+        if rl.is_key_pressed(rl.KEY_F10):
+            debug = not debug
 
         rl.begin_drawing()
         rl.clear_background(rl.BLACK)
@@ -42,6 +44,8 @@ def main():
         if debug:
             rl.draw_rectangle(3, 3, rl.measure_text(str(round(rl.get_fps())), 12) + 3, 15, rl.Color(0, 0, 0, 172))
             rl.draw_text(str(round(rl.get_fps())), 5, 5, 12, rl.WHITE)
+            rl.draw_text(str(round(rl.get_frame_time(), 8)), 5, 17, 12, rl.WHITE)
+            rl.draw_text(str(loaded_scenes), 5, 29, 12, rl.WHITE)
 
         cursor_color = rl.RED
         for btn in buttons:

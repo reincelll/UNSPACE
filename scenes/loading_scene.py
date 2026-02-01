@@ -2,11 +2,15 @@ import raylibpy as rl
 from scenes.scene import Scene
 from scenes.menu_scene import MenuScene
 from engine.text import text
+from engine.assets import asset_path
 
 class LoadingScene(Scene):
     def __init__(self, manager):
         self.manager = manager
-        self.raylib_logo = rl.load_texture("assets/icons/raylib_logo.png")
+        self.raylib_logo = rl.load_texture(asset_path("assets/icons/raylib_logo.png"))
+        self.game_icon = rl.load_image(asset_path("assets/icon.png"))
+        rl.image_format(self.game_icon, rl.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8)
+        rl.set_window_icon(self.game_icon)
 
     def on_exit(self):
         rl.unload_texture(self.raylib_logo)

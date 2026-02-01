@@ -14,27 +14,39 @@ def button_update():
                 btn.selected = False
 
 class button:
-    def __init__(self, text, x, y, width, height):
+    def __init__(self, text, x, y, width, height, on_click=None):
         self.text = text
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.selected = False
+        self.on_click = on_click
+        self.clicked = False
         global buttons
         buttons.append(self)
 
     def draw(self):
         color = rl.RED
+        bg_color = rl.RED
         offset = 0
         if self.selected:
-            color = rl.WHITE
-            rl.draw_rectangle_gradient_h(self.x - offset, self.y - offset, self.width + (offset * 2), self.height + (offset * 2), rl.Color(240, 41, 55, 172), rl.Color(240, 41, 55, 0))
+            color = rl.BLACK
             if rl.is_mouse_button_down(rl.MOUSE_BUTTON_LEFT):
                 offset = 2
+                bg_color = rl.Color(255, 71, 85, 255)
             else:
                 offset = 5
+                bg_color = rl.RED
+            rl.draw_rectangle(self.x, self.y, self.width, self.height, bg_color)
+            if rl.is_mouse_button_released(rl.MOUSE_BUTTON_LEFT):
+                if not self.clicked:
+                    self.clicked = True
+                    if self.on_click:
+                        self.on_click()
+            else:
+                self.clicked = False
         else:
-            rl.draw_rectangle_gradient_h(self.x - offset, self.y - offset, self.width / 4 + (offset * 2), self.height + (offset * 2), rl.Color(240, 41, 55, 60), rl.Color(240, 41, 55, 0))
+            self.clicked = False
         rl.draw_rectangle_lines_ex(rl.Rectangle(self.x - offset, self.y - offset, self.width + (offset * 2), self.height + (offset * 2)), 2, color)
-        text(self.text, self.x + 10 + offset, self.y + 5, (self.height - 10), color)
+        text(self.text, self.x + (self.width / 2) - (rl.measure_text(self.text, self.height - 10) / 2), self.y + 5, self.height - 10, color)

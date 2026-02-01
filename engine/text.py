@@ -1,10 +1,11 @@
 import raylibpy as rl
+from engine.assets import asset_path
 
 font = None
 
 def load_font():
     global font
-    font = rl.load_font("assets/fonts/ZalandoSans.ttf")
+    font = rl.load_font(asset_path("assets/fonts/ZalandoSans.ttf"))
 
 def text(string, x, y, size, color):
     global font
