@@ -1,7 +1,7 @@
 import raylibpy as rl
 from scenes.scene import Scene
 from engine.text import text
-from engine.button import button, buttons
+from engine.button import button
 import scenes as sc
 from engine.color import get_primary
 from engine.assets import asset_path
@@ -24,7 +24,7 @@ class MenuScene(Scene):
         return super().on_exit()
 
     def on_play_clicked(self):
-        self.manager.change(sc.GameScene(self.manager))
+        self.manager.change(sc.SaveManager(self.manager))
 
     def on_settings_clicked(self):
         self.manager.change(sc.SettingsScene(self.manager))

@@ -1,7 +1,7 @@
 import raylibpy as rl
 from scenes.scene import Scene
 from engine.text import text
-from engine.button import button, slider, buttons
+from engine.button import button, slider
 from engine.assets import asset_path
 from engine.color import get_primary
 import scenes as sc
@@ -13,30 +13,62 @@ class SettingsScene(Scene):
         self.settings = s.load_settings()
 
     def on_enter(self):
-        self.btn_back = button("BACK TO MENU", 20, 370, 240, 30, on_click=self.on_back_clicked)
-        self.btn_fullscreen = button("FULLSCREEN", 20, 200, 300, 60, on_click=self.toggle_fullscreen, text_size=20)
-        self.sldr_fps = slider(20, 300, 130, 30, 30, 360, self.settings.get("max_fps", 60))
+        self.bl_fullscreen = self.settings["fullscreen"]
+        self.btn_back = button("BACK", 20, 370, 280, 30, on_click=self.on_back_clicked)
+        self.btn_apply = button("NO CHANGES", 20, 370, 280, 30, on_click=self.on_apply_clicked)
+        self.btn_apply.disabled = True
+        self.btn_fullscreen = button("FULLSCREEN", 20, 190, 300, 300, on_click=self.toggle_fullscreen, text_size=20, text_offset=rl.Vector2(0, 133))
+        if not self.bl_fullscreen:
+            self.btn_fullscreen.text = "WINDOWED"
+        self.sldr_fps = slider(122, 525, 130, 30, 0, 360, self.settings.get("max_fps", 60))
+
+        self.img_fullscreenhint = rl.load_texture(asset_path("assets/images/settingsfullscreenhint.png"))
+        self.img_windowedhint = rl.load_texture(asset_path("assets/images/settingswindowedhint.png"))
+
         return super().on_enter()
     
     def toggle_fullscreen(self):
-        rl.toggle_borderless_windowed()
-        self.settings["fullscreen"] = rl.is_window_fullscreen()
-        s.save_settings(self.settings)
+        if not self.bl_fullscreen:
+            self.bl_fullscreen = True
+            self.btn_fullscreen.text = "FULLSCREEN"
+        else:
+            self.bl_fullscreen = False
+            self.btn_fullscreen.text = "WINDOWED"
+        self.settings["fullscreen"] = self.bl_fullscreen
+        self.btn_apply.text = "APPLY"
+        self.btn_apply.disabled = False
     
     def on_back_clicked(self):
-        s.save_settings(self.settings)
         self.manager.change(sc.MenuScene(self.manager))
+
+    def on_apply_clicked(self):
+        s.save_settings(self.settings)
+        rl.set_target_fps(self.settings["max_fps"])
+        if rl.get_screen_width() == rl.get_monitor_width(rl.get_current_monitor()) and rl.get_screen_height() == rl.get_monitor_height(rl.get_current_monitor()):
+            if self.btn_fullscreen.text == "WINDOWED":
+                rl.toggle_borderless_windowed()
+        else:
+            if self.btn_fullscreen.text == "FULLSCREEN":
+                rl.toggle_borderless_windowed()
+            
+        self.btn_apply.text = "NO CHANGES"
+        self.btn_apply.disabled = True
     
     def on_exit(self):
+        rl.unload_texture(self.img_fullscreenhint)
+        rl.unload_texture(self.img_windowedhint)
         return super().on_exit()
 
     def update(self, dt):
         self.btn_back.y = rl.get_screen_height() - (self.btn_back.height + 20)
         self.btn_back.y = max(self.btn_back.y, 300)
+        self.btn_apply.y = self.btn_back.y
+        self.btn_apply.x = self.btn_back.x + self.btn_back.width + 10
+        self.btn_apply.width = rl.get_screen_width() - (self.btn_back.x + self.btn_back.width) - 30
+        self.sldr_fps.width = rl.get_screen_width() - (self.sldr_fps.x + 20)
 
-        for btn in buttons:
-            if not btn == self.btn_back:
-                btn.width = rl.get_screen_width() - (btn.x * 2)
+        self.btn_fullscreen.width = 486
+        self.btn_fullscreen.x = (rl.get_screen_width() / 2) - (self.btn_fullscreen.width / 2)
 
     def draw(self):
         rl.draw_rectangle_lines(10, 10, rl.get_screen_width() - 20, rl.get_screen_height() - 20, get_primary())
@@ -45,15 +77,20 @@ class SettingsScene(Scene):
         text("UNSPACE", rl.get_screen_width() / 2 - (rl.measure_text("UNSPACE", 80) / 2) - 13, 20, 80, rl.BLACK)
         text("SETTINGS", rl.get_screen_width() / 2 - (rl.measure_text("SETTINGS", 30) / 2) - 13, 100, 30, rl.BLACK)
         self.btn_back.draw()
+        self.btn_apply.draw()
         self.btn_fullscreen.draw()
-        text(f"FPS: {round(self.sldr_fps.value / 10) * 10}", 20, 280, 20, get_primary())
         self.sldr_fps.draw()
+        if self.btn_fullscreen.text == "FULLSCREEN":
+            rl.draw_texture_ex(self.img_fullscreenhint, rl.Vector2((rl.get_screen_width() / 2) - (self.img_fullscreenhint.width / 2), 200), 0, 1, rl.WHITE)
+        else:
+            rl.draw_texture_ex(self.img_windowedhint, rl.Vector2((rl.get_screen_width() / 2) - (self.img_windowedhint.width / 2), 200), 0, 1, rl.WHITE)
+        text(f"FPS: {round(self.sldr_fps.value / 10) * 10}", 20, 530, 20, get_primary())
 
         if not self.sldr_fps.dragging and not self.settings["max_fps"] == round(self.sldr_fps.value / 10) * 10:
             self.sldr_fps.value = round(self.sldr_fps.value / 10) * 10
             self.update_fps()
 
     def update_fps(self):
-        rl.set_target_fps(round(self.sldr_fps.value / 10) * 10)
         self.settings["max_fps"] = round(self.sldr_fps.value / 10) * 10
-        s.save_settings(self.settings)
+        self.btn_apply.text = "APPLY"
+        self.btn_apply.disabled = False

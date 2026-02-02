@@ -1,11 +1,14 @@
 import raylibpy as rl
 from engine.text import text
 from engine.color import get_primary
+from engine.assets import asset_path
 
 buttons = []
+click_sfx = None
 
 def button_update():
     global buttons
+    global click_sfx
     if not rl.get_mouse_delta() == rl.Vector2(0, 0):
         mouse_pos = rl.get_mouse_position()
         for btn in buttons:
@@ -13,9 +16,12 @@ def button_update():
                 btn.selected = True
             else:
                 btn.selected = False
+    if rl.is_audio_device_ready and not click_sfx:
+        click_sfx = rl.load_sound(asset_path("assets/audio/sound effects/click.mp3"))
+        click_sfx.set_volume(0.1)
 
 class button:
-    def __init__(self, text, x, y, width, height, on_click=None, text_size=0, color=get_primary()):
+    def __init__(self, text, x, y, width, height, on_click=None, text_size=0, color=get_primary(), text_offset=rl.Vector2(0, 0)):
         self.text = text
         self.x = x
         self.y = y
@@ -26,18 +32,26 @@ class button:
         self.clicked = False
         self.text_size = text_size
         self.color = color
+        self.text_offset = text_offset
+        self.disabled = False
+
         global buttons
         buttons.append(self)
 
     def draw(self):
-        color = self.color
-        bg_color = self.color
+        global click_sfx
+        if not self.disabled:
+            color = self.color
+            bg_color = self.color
+        else:
+            color = rl.Color(self.color.r / 2, self.color.g / 2, self.color.b / 2, 255)
+            bg_color = rl.Color(self.color.r / 2, self.color.g / 2, self.color.b / 2, 255)
         if self.text_size:
             text_size = self.text_size
         else:
             text_size = self.height - 10
         offset = 0
-        if self.selected:
+        if self.selected and not self.disabled:
             color = rl.BLACK
             if rl.is_mouse_button_down(rl.MOUSE_BUTTON_LEFT):
                 offset = 2
@@ -53,8 +67,10 @@ class button:
                 self.clicked = False
         else:
             self.clicked = False
+        if rl.is_mouse_button_pressed(rl.MOUSE_BUTTON_LEFT) and self.selected and not self.disabled:
+            rl.play_sound(click_sfx)
         rl.draw_rectangle_lines_ex(rl.Rectangle(self.x - offset, self.y - offset, self.width + (offset * 2), self.height + (offset * 2)), 2, color)
-        text(self.text, self.x + (self.width / 2) - (rl.measure_text(self.text, text_size) / 2), (self.y + (self.height / 2) - (text_size / 2)) - offset, text_size, color)
+        text(self.text, (self.x + (self.width / 2) - (rl.measure_text(self.text, text_size) / 2)) + self.text_offset.x, ((self.y + (self.height / 2) - (text_size / 2)) - offset) + self.text_offset.y, text_size, color)
 
 class slider:
     def __init__(self, x, y, width, height, min_value=0, max_value=100, initial_value=50, on_change=None, color=get_primary()):
@@ -70,12 +86,13 @@ class slider:
         self.handle_width = 10
         self.dragging = False
         self.selected = False
+        self.disabled = False
 
         global buttons
         buttons.append(self)
 
     def draw(self):
-        rl.draw_rectangle(self.x, self.y + self.height // 2 - 2, self.width, 4, rl.LIGHTGRAY)
+        rl.draw_rectangle(self.x, self.y + self.height // 2 - 2, self.width, 4, self.color)
         handle_x = self.x + int((self.value - self.min_value) / (self.max_value - self.min_value) * (self.width - self.handle_width))
         handle_y = self.y
         rl.draw_rectangle(handle_x, handle_y, self.handle_width, self.height, self.color)
@@ -91,8 +108,6 @@ class slider:
                     self.on_change(self.value)
         else:
             self.dragging = False
-
-
 
 def del_buttons():
     buttons.clear()

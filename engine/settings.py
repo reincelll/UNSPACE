@@ -18,5 +18,6 @@ def load_settings():
 
 def save_settings(settings):
     path = get_settings_path()
+    print(f"settings saved to {path}")
     with open(path, "w") as f:
         json.dump(settings, f, indent=4)

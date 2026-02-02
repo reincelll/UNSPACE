@@ -21,8 +21,8 @@ if "--console" in sys.argv:
     sys.stdin  = open("CONIN$", "r")
 
 info = {
-    "version": "0.0.0",
-    "build_notes": "2/1/26; 12:48PM"
+    "version": "0.0.9",
+    "build_notes": "2/1/26; 9:28PM"
 }
 
 def draw_debug(text, x, y):
@@ -30,13 +30,16 @@ def draw_debug(text, x, y):
     rl.draw_text(text, x + 2, y + 2, 12, rl.BLACK)
 
 def main():
-    settings = s.load_settings()
     rl.set_config_flags(rl.FLAG_WINDOW_RESIZABLE)
     rl.init_window(1080, 740, "UNSPACE")
     rl.set_target_fps(30)
     rl.set_exit_key(rl.KEY_NULL)
     rl.hide_cursor()
+    rl.init_audio_device()
     rl.set_window_min_size(640, 480)
+
+    settings = s.load_settings()
+    
     if settings["fullscreen"]:
         rl.toggle_borderless_windowed()
 
@@ -51,6 +54,7 @@ def main():
     scene_manager.change(LoadingScene(scene_manager))
 
     while not rl.window_should_close():
+        settings = s.load_settings()
         dt = rl.get_frame_time()
 
         button_update()
@@ -79,7 +83,7 @@ def main():
 
         cursor_color = rl.WHITE
         for btn in buttons:
-            if btn.selected:
+            if btn.selected and not btn.disabled:
                 cursor_color = get_primary()
         if rl.is_mouse_button_down(rl.MOUSE_BUTTON_LEFT):
             cursor_color = get_primary()
@@ -90,10 +94,12 @@ def main():
 
     rl.close_window()
     rl.rlgl_close()
+    rl.close_audio_device()
 
 try:
     main()
     rl.close_window()
+    rl.close_audio_device()
 except Exception as e:
     messagebox.showerror(
         "UNSPACE Engine Error!",
@@ -101,5 +107,6 @@ except Exception as e:
     )
     rl.close_window()
     rl.rlgl_close()
+    rl.close_audio_device()
 
 root.mainloop()

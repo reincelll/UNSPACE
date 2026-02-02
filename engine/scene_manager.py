@@ -7,16 +7,19 @@ class SceneManager:
         self.current = None
 
     def change(self, scene):
+        scene_to_unload = None
         if self.current:
-            self.current.on_exit()
+            scene_to_unload = self.current
             print(f"unloading {self.current}...")
-            loaded_scenes.remove(self.current)
-            del self.current
         del_buttons()
         self.current = scene
         self.current.on_enter()
+        self.current.draw()
         print(f"loading {self.current}...")
         loaded_scenes.append(self.current)
+        if scene_to_unload:
+            scene_to_unload.on_exit()
+            loaded_scenes.remove(scene_to_unload)
 
     def update(self, dt):
         if self.current:
