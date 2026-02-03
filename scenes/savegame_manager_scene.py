@@ -1,22 +1,20 @@
 import raylibpy as rl
-import scenes as sc
-from engine.text import text
-from engine.button import button
-from engine.color import get_primary
+import scenes as s
+import engine as e
 
-class SaveManager(sc.Scene):
+class SaveManager(s.Scene):
     def __init__(self, manager):
         self.manager = manager
 
     def on_enter(self):
-        self.btn_back = button("BACK", 20, 370, 280, 30, on_click=self.on_back_clicked)
+        self.btn_back = e.button("BACK", 20, 370, 280, 30, on_click=self.on_back_clicked)
         return super().on_enter()
 
     def on_exit(self):
         return super().on_exit()
     
     def on_back_clicked(self):
-        self.manager.change(sc.MenuScene(self.manager))
+        self.manager.change(s.MenuScene(self.manager))
 
     def update(self, dt):
         self.btn_back.y = rl.get_screen_height() - (self.btn_back.height + 20)
@@ -26,4 +24,4 @@ class SaveManager(sc.Scene):
 
     def draw(self):
         self.btn_back.draw()
-        rl.draw_rectangle_lines(10, 10, rl.get_screen_width() - 20, rl.get_screen_height() - 20, get_primary())
+        rl.draw_rectangle_lines(10, 10, rl.get_screen_width() - 20, rl.get_screen_height() - 20, e.get_primary())

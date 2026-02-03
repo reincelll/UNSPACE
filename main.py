@@ -1,15 +1,13 @@
 import raylibpy as rl
-from engine.scene_manager import SceneManager, loaded_scenes
-from scenes import *
-from engine.text import load_font
-from engine.button import button_update, buttons
+
+import scenes as s
+import engine as e
+
 import tkinter as tk
 from tkinter import messagebox
-from engine.assets import asset_path
 import sys
 import ctypes
-from engine.color import get_primary
-import engine.settings as s
+import traceback
 
 root = tk.Tk()
 root.withdraw()
@@ -21,9 +19,11 @@ if "--console" in sys.argv:
     sys.stdin  = open("CONIN$", "r")
 
 info = {
-    "version": "0.0.9",
-    "build_notes": "2/1/26; 9:28PM"
+    "version": "0.1.1",
+    "build_notes": "2/2/26; 9:50PM"
 }
+
+click_sfx = None
 
 def draw_debug(text, x, y):
     rl.draw_rectangle(x, y, rl.measure_text(text, 12) + 6, 15, rl.Color(255, 255, 255, 172))
@@ -38,31 +38,39 @@ def main():
     rl.init_audio_device()
     rl.set_window_min_size(640, 480)
 
-    settings = s.load_settings()
+    e.load_btn_assets()
+
+    settings = e.load_settings()
     
     if settings["fullscreen"]:
         rl.toggle_borderless_windowed()
 
-    load_font()
+    e.load_font()
 
     debug = False
 
-    cursor_image = rl.load_texture(asset_path("assets/cursor.png"))
-    cursor_color = get_primary()
+    cursor_image = rl.load_texture(e.asset_path("assets/cursor.png"))
+    cursor_color = e.get_primary()
 
-    scene_manager = SceneManager()
-    scene_manager.change(LoadingScene(scene_manager))
+    scene_manager = e.SceneManager()
+    scene_manager.change(s.LoadingScene(scene_manager))
 
     while not rl.window_should_close():
-        settings = s.load_settings()
+        settings = e.load_settings()
         dt = rl.get_frame_time()
 
-        button_update()
+        e.button_update()
 
         scene_manager.update(dt)
 
         if rl.is_key_pressed(rl.KEY_F11):
             rl.toggle_borderless_windowed()
+            if rl.get_screen_width() == rl.get_monitor_width(rl.get_current_monitor()) and rl.get_screen_height() == rl.get_monitor_height(rl.get_current_monitor()):
+                bl_fullscreen = True
+            else:
+                bl_fullscreen = False
+            settings["fullscreen"] = bl_fullscreen
+            s.save_settings(settings)
         if rl.is_key_pressed(rl.KEY_F10):
             debug = not debug
 
@@ -72,41 +80,66 @@ def main():
         if debug:
             draw_debug(f"Frames Per Second: {str(round(rl.get_fps()))}", 3, 3)
             draw_debug(f"Delta Time: {str(round(rl.get_frame_time(), 8))}", 3, 18)
-            draw_debug(str(loaded_scenes), 3, 33)
+            draw_debug(str(e.loaded_scenes), 3, 33)
             draw_debug(info["version"], 3, 48)
             if getattr(sys, 'frozen', False):
                 draw_debug("Compiled/Build", 3, 63)
             else:
                 draw_debug("Python/File", 3, 63)
-            draw_debug(str(buttons), 3, 78)
+            draw_debug(str(e.buttons), 3, 78)
             draw_debug(info["build_notes"], 3, 93)
 
         cursor_color = rl.WHITE
-        for btn in buttons:
+        for btn in e.buttons:
             if btn.selected and not btn.disabled:
-                cursor_color = get_primary()
+                cursor_color = e.get_primary()
         if rl.is_mouse_button_down(rl.MOUSE_BUTTON_LEFT):
-            cursor_color = get_primary()
+            cursor_color = e.get_primary()
 
         rl.draw_texture_ex(cursor_image, rl.Vector2(rl.get_mouse_x() - 2, rl.get_mouse_y() - 2), 0, 0.5, cursor_color)
 
         rl.end_drawing()
 
-    rl.close_window()
     rl.rlgl_close()
     rl.close_audio_device()
+    rl.close_window()
 
 try:
     main()
-    rl.close_window()
     rl.close_audio_device()
-except Exception as e:
-    messagebox.showerror(
-        "UNSPACE Engine Error!",
-        f"{type(e).__name__}\n{e}"
-    )
     rl.close_window()
+except Exception as e:
+    exc_type, exc_value, exc_tb = sys.exc_info()
+
+    tb = traceback.extract_tb(exc_tb)
+    last = tb[-1] if tb else None
+
+    error_details = f"""
+    UNSPACE Engine crashed 💥
+
+    Exception Type:
+    {exc_type.__name__}
+
+    Message:
+    {e}
+
+    File:
+    {last.filename if last else 'Unknown'}
+
+    Line:
+    {last.lineno if last else 'Unknown'}
+
+    Function:
+    {last.name if last else 'Unknown'}
+
+    ------------------------------
+    Full Traceback:
+    {''.join(traceback.format_exception(exc_type, exc_value, exc_tb))}
+    """
+
+    messagebox.showerror("UNSPACE Engine Error!", error_details)
     rl.rlgl_close()
     rl.close_audio_device()
+    rl.close_window()
 
 root.mainloop()

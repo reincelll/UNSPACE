@@ -1,4 +1,6 @@
-from engine.button import del_buttons
+import raylibpy as rl
+import scenes as s
+import engine as e
 
 loaded_scenes = []
 
@@ -11,13 +13,13 @@ class SceneManager:
         if self.current:
             scene_to_unload = self.current
             print(f"unloading {self.current}...")
-        del_buttons()
+        e.del_buttons()
         self.current = scene
         self.current.on_enter()
-        self.current.draw()
         print(f"loading {self.current}...")
         loaded_scenes.append(self.current)
         if scene_to_unload:
+            scene_to_unload.draw()
             scene_to_unload.on_exit()
             loaded_scenes.remove(scene_to_unload)
 

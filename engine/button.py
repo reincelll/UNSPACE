@@ -4,21 +4,21 @@ from engine.color import get_primary
 from engine.assets import asset_path
 
 buttons = []
-click_sfx = None
 
 def button_update():
+    mouse_pos = rl.get_mouse_position()
     global buttons
     global click_sfx
-    if not rl.get_mouse_delta() == rl.Vector2(0, 0):
-        mouse_pos = rl.get_mouse_position()
-        for btn in buttons:
-            if mouse_pos.x > btn.x and mouse_pos.y > btn.y and mouse_pos.x < btn.x + btn.width and mouse_pos.y < btn.y + btn.height:
-                btn.selected = True
-            else:
-                btn.selected = False
-    if rl.is_audio_device_ready and not click_sfx:
+    for btn in buttons:
+        btn.selected =  mouse_pos.x > btn.x and mouse_pos.y > btn.y and mouse_pos.x < btn.x + btn.width and mouse_pos.y < btn.y + btn.height
+
+click_sfx = None
+
+def load_btn_assets():
+    global click_sfx
+    if not click_sfx:
         click_sfx = rl.load_sound(asset_path("assets/audio/sound effects/click.mp3"))
-        click_sfx.set_volume(0.1)
+        rl.set_sound_volume(click_sfx, 0.1)
 
 class button:
     def __init__(self, text, x, y, width, height, on_click=None, text_size=0, color=get_primary(), text_offset=rl.Vector2(0, 0)):
@@ -85,11 +85,7 @@ class slider:
         self.color = color
         self.handle_width = 10
         self.dragging = False
-        self.selected = False
         self.disabled = False
-
-        global buttons
-        buttons.append(self)
 
     def draw(self):
         rl.draw_rectangle(self.x, self.y + self.height // 2 - 2, self.width, 4, self.color)
