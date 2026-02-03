@@ -10,8 +10,7 @@ class SettingsScene(s.Scene):
     def on_enter(self):
         self.bl_fullscreen = self.settings["fullscreen"]
         self.btn_back = e.button("BACK", 20, 370, 280, 30, on_click=self.on_back_clicked)
-        self.btn_apply = e.button("NO CHANGES", 20, 370, 280, 30, on_click=self.on_apply_clicked)
-        self.btn_apply.disabled = True
+        self.btn_apply = e.button("APPLY", 20, 370, 280, 30, on_click=self.on_apply_clicked)
         self.btn_fullscreen = e.button("FULLSCREEN", 20, 190, 300, 300, on_click=self.toggle_fullscreen, text_size=20, text_offset=rl.Vector2(0, 133))
         if rl.get_screen_width() == rl.get_monitor_width(rl.get_current_monitor()) and rl.get_screen_height() == rl.get_monitor_height(rl.get_current_monitor()):
             self.bl_fullscreen = True
@@ -32,8 +31,6 @@ class SettingsScene(s.Scene):
             self.bl_fullscreen = False
             self.btn_fullscreen.text = "WINDOWED"
         self.settings["fullscreen"] = self.bl_fullscreen
-        self.btn_apply.text = "APPLY"
-        self.btn_apply.disabled = False
     
     def on_back_clicked(self):
         self.manager.change(s.MenuScene(self.manager))
@@ -47,9 +44,6 @@ class SettingsScene(s.Scene):
         else:
             if self.btn_fullscreen.text == "FULLSCREEN":
                 rl.toggle_borderless_windowed()
-            
-        self.btn_apply.text = "NO CHANGES"
-        self.btn_apply.disabled = True
     
     def on_exit(self):
         rl.unload_texture(self.img_fullscreenhint)
@@ -71,6 +65,8 @@ class SettingsScene(s.Scene):
             self.btn_back.on_click()
         if rl.is_key_pressed(rl.KEY_ENTER) and not self.btn_apply.disabled:
             self.btn_apply.on_click()
+        if rl.is_key_pressed(rl.KEY_F11):
+            self.toggle_fullscreen()
 
     def draw(self):
         rl.draw_rectangle_lines(10, 10, rl.get_screen_width() - 20, rl.get_screen_height() - 20, e.get_primary())
@@ -94,5 +90,3 @@ class SettingsScene(s.Scene):
 
     def update_fps(self):
         self.settings["max_fps"] = round(self.sldr_fps.value / 10) * 10
-        self.btn_apply.text = "APPLY"
-        self.btn_apply.disabled = False
