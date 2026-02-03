@@ -137,7 +137,7 @@ except Exception as e:
     {''.join(traceback.format_exception(exc_type, exc_value, exc_tb))}
     """
 
-    if not last.name == "OSError":
+    if not last.name == "close_window":
         messagebox.showerror("UNSPACE Engine Error!", error_details)
     rl.rlgl_close()
     rl.close_audio_device()
