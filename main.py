@@ -19,8 +19,8 @@ if "--console" in sys.argv:
     sys.stdin  = open("CONIN$", "r")
 
 info = {
-    "version": "0.1.1",
-    "build_notes": "2/2/26; 9:50PM"
+    "version": "0.1.2",
+    "build_notes": "2/2/26; 9:53PM"
 }
 
 click_sfx = None
@@ -137,7 +137,8 @@ except Exception as e:
     {''.join(traceback.format_exception(exc_type, exc_value, exc_tb))}
     """
 
-    messagebox.showerror("UNSPACE Engine Error!", error_details)
+    if not last.name == "OSError":
+        messagebox.showerror("UNSPACE Engine Error!", error_details)
     rl.rlgl_close()
     rl.close_audio_device()
     rl.close_window()
